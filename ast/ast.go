@@ -2,20 +2,24 @@ package ast
 
 import "monkey/token"
 
+// This is a node in our AST. Each node must implement the function TokenLiteral()
 type Node interface {
 	TokenLiteral() string
 }
 
+// A statement is something that does not produce a value.
 type Statement interface {
 	Node
-	statementNode()
+	statementNode() // This is only a dummy method and I am not exactly sure what it is used for
 }
 
+// An expression is something that produces a value.
 type Expression interface {
 	Node
-	expressionNode()
+	expressionNode() // This is only a dummy method and I am not exactly sure what it is used for
 }
 
+// A program is a collection of statements.
 type Program struct {
 	Statements []Statement
 }
@@ -32,6 +36,16 @@ type LetStatement struct {
 	Token token.Token
 	Name  *Identifier
 	Value Expression
+}
+
+type ReturnStatement struct {
+	Token       token.Token
+	ReturnValue Expression
+}
+
+func (ls *ReturnStatement) statementNode() {}
+func (ls *ReturnStatement) TokenLiteral() string {
+  return ls.Token.Literal
 }
 
 func (ls *LetStatement) statementNode()       {}
